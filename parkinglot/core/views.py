@@ -7,3 +7,13 @@ from .serializers import ParkingSerializer, CreateParkingSerializer
 class CreateParking(generics.CreateAPIView):
     queryset = Parking.objects.all()
     serializer_class = CreateParkingSerializer
+
+
+class ListParkingHistory(generics.ListAPIView):
+    serializer_class = ParkingSerializer
+
+    def get_queryset(self):
+        """Retorna todos estacionamentos para uma determinada placa"""
+        plate = self.kwargs['plate']
+        queryset = Parking.objects.filter(plate=plate)
+        return queryset
