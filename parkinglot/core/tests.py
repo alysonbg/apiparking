@@ -20,4 +20,10 @@ class TestParking(APITestCase):
         response = self.client.put('/parking/{}/pay/'.format(request_id))
         self.assertTrue(response.data['paid'])
 
+    def test_leave_parking(self):
+        """Testa se é possível sair do estacionamento, caso o estacionamento esteja pago"""
+        request_id = self.client.post('/parking/', {'plate': 'CCC-9797'}).data['id']
+        self.client.put('/parking/{}/pay/'.format(request_id))
+        response = self.client.put('/parking/{}/out/'.format(request_id))
+        self.assertTrue(response.data['left'])
         

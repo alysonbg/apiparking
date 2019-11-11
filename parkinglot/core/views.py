@@ -25,10 +25,26 @@ class PayParking(generics.UpdateAPIView):
     def get_queryset(self):
         """Paga o estacionamento"""
         id = self.kwargs['pk']
-        parking= Parking.objects.get(id=id)
+        parking = Parking.objects.get(id=id)
         queryset = Parking.objects.filter(id=id)
         if not parking.paid:
             parking.paid = True
             parking.save()
 
+        return queryset
+
+
+class LeaveParking(generics.UpdateAPIView):
+    serializer_class = ParkingSerializer
+
+    def get_queryset(self):
+        """Sai do estacionamento"""
+        id = self.kwargs['pk']
+        parking = Parking.objects.get(id=id)
+        queryset = Parking.objects.filter(id=id)
+
+        if parking.paid:
+            parking.left = True
+            parking.save()
+        
         return queryset
