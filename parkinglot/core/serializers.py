@@ -25,5 +25,4 @@ class CreateParkingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parking
         fields = ('id', 'plate')
-
         

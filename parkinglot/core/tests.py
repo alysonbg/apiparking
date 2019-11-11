@@ -1,6 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import serializers
 
+
 class TestParking(APITestCase):
     def test_create_parking(self):
         """Testa se o parking é criado quando uma requisicao POST ao endpoing /parking"""
@@ -12,5 +13,11 @@ class TestParking(APITestCase):
         self.client.post('/parking/', {'plate': 'BBB-8888'})
         response = self.client.get('/parking/BBB-8888/')
         self.assertIsInstance(response.data, list)
+
+    def test_pay_parking(self):
+        """Testa se o status paid é mudado para True"""
+        request_id = self.client.post('/parking/', {'plate': 'CCC-9797'}).data['id']
+        response = self.client.put('/parking/{}/pay/'.format(request_id))
+        self.assertTrue(response.data['paid'])
 
         

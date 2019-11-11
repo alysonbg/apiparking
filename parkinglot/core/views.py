@@ -17,3 +17,18 @@ class ListParkingHistory(generics.ListAPIView):
         plate = self.kwargs['plate']
         queryset = Parking.objects.filter(plate=plate)
         return queryset
+
+
+class PayParking(generics.UpdateAPIView):
+    serializer_class = ParkingSerializer
+
+    def get_queryset(self):
+        """Paga o estacionamento"""
+        id = self.kwargs['pk']
+        parking= Parking.objects.get(id=id)
+        queryset = Parking.objects.filter(id=id)
+        if not parking.paid:
+            parking.paid = True
+            parking.save()
+
+        return queryset
